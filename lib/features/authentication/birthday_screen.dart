@@ -16,6 +16,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
 
   DateTime initialDate = DateTime.now();
+  DateTime maxDate = DateTime.now().add(const Duration(days: -(365 * 12)));
 
   @override
   void initState() {
@@ -102,8 +103,8 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
         child: SizedBox(
           height: 300,
           child: CupertinoDatePicker(
-            maximumDate: initialDate,
-            initialDateTime: initialDate,
+            maximumDate: maxDate,
+            initialDateTime: maxDate,
             mode: CupertinoDatePickerMode.date,
             onDateTimeChanged: _setTextFieldDate,
           ),
