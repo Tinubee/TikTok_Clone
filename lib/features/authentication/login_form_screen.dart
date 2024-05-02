@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -11,6 +13,19 @@ class LoginFormScreen extends StatefulWidget {
 }
 
 class _LoginFormScreenState extends State<LoginFormScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool stateFormKey = false;
+  Map<String, String> formData = {};
+
+  void _onSubmitTap() {
+    stateFormKey = _formKey.currentState!.validate();
+    if (stateFormKey) {
+      _formKey.currentState!.save();
+      print(formData);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,18 +37,45 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
           horizontal: Sizes.size36,
         ),
         child: Form(
+            key: _formKey,
             child: Column(
-          children: [
-            TextFormField(),
-            Gaps.v16,
-            TextFormField(),
-            Gaps.v28,
-            const FormButton(
-              disabled: false,
-              title: "Log In",
-            ),
-          ],
-        )),
+              children: [
+                Gaps.v28,
+                TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: "Email",
+                    ),
+                    validator: (value) {
+                      return null;
+                    },
+                    onSaved: (newValue) {
+                      if (newValue != null) {
+                        formData['email'] = newValue;
+                      }
+                    }),
+                Gaps.v16,
+                TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: "Password",
+                    ),
+                    validator: (value) {
+                      return null;
+                    },
+                    onSaved: (newValue) {
+                      if (newValue != null) {
+                        formData['password'] = newValue;
+                      }
+                    }),
+                Gaps.v28,
+                GestureDetector(
+                  onTap: _onSubmitTap,
+                  child: const FormButton(
+                    disabled: false,
+                    title: "Log In",
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
